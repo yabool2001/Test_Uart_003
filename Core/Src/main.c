@@ -32,7 +32,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define UART_RX_TIMEOUT 1000
+#define UART_RX_TIMEOUT 2000
 #define UART_TX_TIMEOUT 100
 /* USER CODE END PD */
 
@@ -46,9 +46,10 @@ UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
+HAL_StatusTypeDef uart_status ;
 char        s_start[]   = "START\n" ;
-char        tx[250]     = { 0 } ;
-char        rx[250]     = { 0 } ;
+char        tx[5]       = { 0 } ;
+char        rx[5]       = { 0 } ;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -98,38 +99,24 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
-  HAL_StatusTypeDef uart_status = HAL_UART_Transmit ( &huart2 , (const uint8_t *) s_start , strlen ( s_start ) , UART_TX_TIMEOUT ) ;
-  if ( uart_status != HAL_OK )
-  {
-      Error_Handler () ;
-  }
-  if ( HAL_UART_Transmit ( &huart1 , (const uint8_t *) s_start , strlen( s_start ) , UART_TX_TIMEOUT ) != HAL_OK )
-  {
-      Error_Handler () ;
-  }
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-      if ( HAL_UART_Transmit ( &huart2 , (const uint8_t *) &i , sizeof ( i ) , UART_TX_TIMEOUT ) != HAL_OK )
-      {
-          Error_Handler () ;
-      }
-      i++ ;
-      if ( HAL_UART_Transmit ( &huart1 , (const uint8_t *) j , sizeof ( j ) , UART_TX_TIMEOUT ) != HAL_OK )
-      {
-          Error_Handler () ;
-      }
-      j[0]++ ;
+      //uart_status = HAL_UART_Transmit ( &huart2 , (const uint8_t *) tx , sizeof ( rx ) , UART_TX_TIMEOUT ) ;
+      //uart_status = HAL_UART_Transmit ( &huart1 , (const uint8_t *) rx , sizeof ( tx ) , UART_TX_TIMEOUT ) ;
 
-      HAL_UART_Receive ( &huart1 , (uint8_t *) rcv , sizeof ( rcv ) , UART_RX_TIMEOUT ) ;
-      if ( rcv[0] != 0 )
+      //uint16_t s = sizeof ( rx ) ;
+      uart_status = HAL_UART_Receive ( &huart2 , (uint8_t *) rx , sizeof ( rx ) , UART_RX_TIMEOUT ) ;
+      // The UART hardware has a receive buffer of one character.
+      if ( rx[0] != 0 )
       {
-          i = rcv[0] ;
-          rcv[0] = 0 ;
+          strcpy ( tx , rx ) ;
+          rx[0] = 0 ;
       }
 
-      HAL_Delay ( 1000 ) ;
+      //HAL_Delay ( 1000 ) ;
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
