@@ -47,9 +47,8 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 char        s_start[]   = "START\n" ;
-uint8_t     i           = 33 ;
-uint8_t     j[1]        = { 33 } ;
-char        rcv[1]      = { 0 } ;
+char        tx[250]     = { 0 } ;
+char        rx[250]     = { 0 } ;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -104,7 +103,7 @@ int main(void)
   {
       Error_Handler () ;
   }
-  if ( HAL_UART_Transmit ( &huart1 , (const uint8_t *) s_start , sizeof ( s_start ) , UART_TX_TIMEOUT ) != HAL_OK )
+  if ( HAL_UART_Transmit ( &huart1 , (const uint8_t *) s_start , strlen( s_start ) , UART_TX_TIMEOUT ) != HAL_OK )
   {
       Error_Handler () ;
   }
