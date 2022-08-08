@@ -108,13 +108,14 @@ int main(void)
       //uart_status = HAL_UART_Transmit ( &huart1 , (const uint8_t *) rx , sizeof ( tx ) , UART_TX_TIMEOUT ) ;
 
       //uint16_t s = sizeof ( rx ) ;
-      uart_status = HAL_UART_Receive ( &huart2 , (uint8_t *) rx , sizeof ( rx ) , UART_RX_TIMEOUT ) ;
+      uart_status = HAL_UART_Receive ( &huart1 , (uint8_t *) rx , /*sizeof ( rx )*/2 , UART_RX_TIMEOUT ) ;
       // The UART hardware has a receive buffer of one character.
       if ( rx[0] != 0 )
       {
           strcpy ( tx , rx ) ;
           rx[0] = 0 ;
       }
+      HAL_Delay ( 1000 ) ;
 
       //HAL_Delay ( 1000 ) ;
     /* USER CODE END WHILE */
